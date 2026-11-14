@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <string>
+#include <fstream>
 using namespace std;
 
 class Transaction {
@@ -10,22 +11,24 @@ public:
     int transId;
     string type;
     int medId;
+    int quantity;
     double amount;
 
-    Transaction(int tId = 0, string t = "", int mId = 0, double amt = 0.0) {
+    Transaction(int tId = 0, string t = "", int mId = 0, double amt = 0.0, int q = 1) {
         transId = tId;
         type = t;
         medId = mId;
         amount = amt;
+        quantity = q;
     }
 
     void display() {
-        cout << "TransID: " << transId << " | " << type 
-             << " | MedID: " << medId << " | Amount: $" << amount << endl;
+        cout << "TransID: " << transId << " | " << type
+             << " | MedID: " << medId << " | Qty: " << quantity
+             << " | Amount: Rs." << amount << endl;
     }
 };
 
-// Stack Node for Undo/Redo
 struct StackNode {
     Transaction data;
     StackNode* next;
@@ -35,9 +38,8 @@ struct StackNode {
     }
 };
 
-// Dual Stack for Undo and Redo
 class DualStack {
-private:
+public:
     StackNode* undoTop;
     StackNode* redoTop;
 
@@ -56,7 +58,6 @@ private:
         return t;
     }
 
-public:
     DualStack() {
         undoTop = nullptr;
         redoTop = nullptr;
@@ -66,28 +67,29 @@ public:
         push(undoTop, t);
     }
 
-    void undo() {
+    Transaction undo() {
         if (undoTop == nullptr) {
             cout << "Nothing to undo!" << endl;
-            return;
+            return Transaction(0, "", 0, 0.0, 0);
         }
         Transaction t = pop(undoTop);
         push(redoTop, t);
         cout << "Undid Transaction ID: " << t.transId << endl;
+        return t;
     }
 
-    void redo() {
+    Transaction redo() {
         if (redoTop == nullptr) {
             cout << "Nothing to redo!" << endl;
-            return;
+            return Transaction(0, "", 0, 0.0, 0);
         }
         Transaction t = pop(redoTop);
         push(undoTop, t);
         cout << "Redid Transaction ID: " << t.transId << endl;
+        return t;
     }
 };
 
-// Doubly Linked List Node for Transaction History
 struct DLLNode {
     Transaction data;
     DLLNode* prev;
@@ -99,7 +101,6 @@ struct DLLNode {
     }
 };
 
-// Doubly Linked List for Chronological Transaction History
 class TransactionHistory {
 public:
     DLLNode* head;
@@ -122,11 +123,83 @@ public:
     }
 
     void displayAll() {
+        if (head == nullptr) {
+            cout << "No transactions recorded." << endl;
+            return;
+        }
         DLLNode* temp = head;
         while (temp != nullptr) {
             temp->data.display();
             temp = temp->next;
         }
+    }
+
+    void quickSortArray(Transaction arr[], int low, int high) {
+        if (low < high) {
+            double pivot = arr[high].amount;
+            int i = low - 1;
+            for (int j = low; j < high; j++) {
+                if (arr[j].amount > pivot) {
+                    i++;
+                    Transaction temp = arr[i];
+                    arr[i] = arr[j];
+                    arr[j] = temp;
+                }
+            }
+            Transaction temp = arr[i + 1];
+            arr[i + 1] = arr[high];
+            arr[high] = temp;
+            int pi = i + 1;
+
+            quickSortArray(arr, low, pi - 1);
+            quickSortArray(arr, pi + 1, high);
+        }
+    }
+
+    void displayProfitRankingQuickSort() {
+        Transaction* arr = new Transaction[2000];
+        int count = 0;
+        DLLNode* temp = head;
+        while (temp != nullptr && count < 2000) {
+            arr[count++] = temp->data;
+            temp = temp->next;
+        }
+        if (count == 0) {
+            cout << "No transactions to rank." << endl;
+            delete[] arr;
+            return;
+        }
+        quickSortArray(arr, 0, count - 1);
+        cout << "\n--- Sales & Profit Ranking (Quick Sort Highest to Lowest) ---" << endl;
+        for (int i = 0; i < count; i++) {
+            arr[i].display();
+        }
+        delete[] arr;
+    }
+
+    void saveTransactionsCSV() {
+        ofstream fout("transactions.csv");
+        DLLNode* temp = head;
+        while (temp != nullptr) {
+            fout << temp->data.transId << " " << temp->data.type << " "
+                 << temp->data.medId << " " << temp->data.amount << " "
+                 << temp->data.quantity << endl;
+            temp = temp->next;
+        }
+        fout.close();
+    }
+
+    void loadTransactionsCSV() {
+        ifstream fin("transactions.csv");
+        if (!fin) return;
+        head = tail = nullptr;
+        int tId, mId, q;
+        string t;
+        double amt;
+        while (fin >> tId >> t >> mId >> amt >> q) {
+            append(Transaction(tId, t, mId, amt, q));
+        }
+        fin.close();
     }
 };
 
