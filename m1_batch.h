@@ -152,8 +152,7 @@ public:
         }
         return total;
     }
-
-    bool sellFromFEFO(int medId, int qtyNeeded, int currentDate) {
+bool sellFromFEFO(int medId, int qtyNeeded, int currentDate) {
         if (getValidBatchStock(medId, currentDate) < qtyNeeded) {
             return false;
         }
