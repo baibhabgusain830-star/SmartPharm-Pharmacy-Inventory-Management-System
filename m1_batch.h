@@ -10,7 +10,6 @@ public:
     int medId;
     int quantity;
     int expiryDate;
-
     Batch(int bId = 0, int mId = 0, int q = 0, int exp = 0) {
         batchId = bId;
         medId = mId;
