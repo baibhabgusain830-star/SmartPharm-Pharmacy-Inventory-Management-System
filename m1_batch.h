@@ -139,9 +139,9 @@ public:
             if (nearestBatchId != -1) {
                 cout << "   Next Batch to Dispense (FEFO): Batch ID " << nearestBatchId
                      << " (Expires: " << nearestExp << ")" << endl;
-            }
         }
     }
+}
 
     int getValidBatchStock(int medId, int currentDate) {
         int total = 0;
