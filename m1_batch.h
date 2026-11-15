@@ -1,5 +1,6 @@
 #ifndef BATCH_H
 #define BATCH_H
+
 #include <iostream>
 #include <fstream>
 using namespace std;
