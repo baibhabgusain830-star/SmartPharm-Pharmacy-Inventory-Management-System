@@ -44,7 +44,6 @@ public:
         a = b;
         b = temp;
     }
-
     void rebuildHeap() {
         int oldSize = size;
         Batch* temp = new Batch[oldSize];
