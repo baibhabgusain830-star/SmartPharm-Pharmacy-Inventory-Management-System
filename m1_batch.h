@@ -1,6 +1,5 @@
 #ifndef BATCH_H
 #define BATCH_H
-
 #include <iostream>
 #include <fstream>
 using namespace std;
@@ -57,7 +56,7 @@ public:
         for (int i = 0; i < oldSize; i++) {
             if (temp[i].quantity > 0) {
                 insert(temp[i]);
-            }
+         }
         }
         delete[] temp;
     }
@@ -245,9 +244,9 @@ public:
                  << heap[i].quantity << " " << heap[i].expiryDate << endl;
         }
         fout.close();
-    }
+ }
 
-    void loadBatchesCSV() {
+void loadBatchesCSV() {
         ifstream fin("batches.csv");
         if (!fin) return;
         size = 0;
