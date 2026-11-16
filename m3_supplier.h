@@ -17,12 +17,10 @@ public:
         name = n;
         contact = c;
     }
-
     void display() {
         cout << "Supplier [" << supplierId << "]: " << name << " (" << contact << ")" << endl;
     }
 };
-
 class CircularQueue {
 public:
     static const int CAPACITY = 100;
@@ -37,11 +35,11 @@ public:
 
     void enqueue(Supplier s) {
         if (count == CAPACITY) {
-            cout << "Order Queue is Full!" << endl;
+            cout<<"Order Queue is Full!"<<endl;
             return;
         }
-        rear = (rear + 1) % CAPACITY;
-        orders[rear] = s;
+        rear=(rear + 1)%CAPACITY;
+        orders[rear]=s;
         count++;
     }
 
@@ -100,7 +98,7 @@ struct EdgeNode {
 
 class SupplierGraph {
 public:
-    static const int MAX_SUPPLIERS = 100;
+    static const int MAX_SUPPLIERS=100;
     int supplierIds[MAX_SUPPLIERS];
     EdgeNode* adjList[MAX_SUPPLIERS];
     int vertexCount;
@@ -109,7 +107,6 @@ public:
         vertexCount = 0;
         for (int i = 0; i < MAX_SUPPLIERS; i++) adjList[i] = nullptr;
     }
-
     int findOrAddSupplierVertex(int supId) {
         for (int i = 0; i < vertexCount; i++) {
             if (supplierIds[i] == supId) return i;
@@ -123,16 +120,15 @@ public:
     }
 
     void addLink(int supId, int medId) {
-        int idx = findOrAddSupplierVertex(supId);
+        int idx=findOrAddSupplierVertex(supId);
         if (idx == -1) return;
         EdgeNode* newEdge = new EdgeNode(medId);
         newEdge->next = adjList[idx];
         adjList[idx] = newEdge;
     }
-
     void dfsHelper(int idx, bool visited[]) {
         visited[idx] = true;
-        cout << "Supplier ID " << supplierIds[idx] << " supplies Medicine IDs: ";
+        cout << "Supplier ID " << supplierIds[idx]<<"supplies Medicine IDs: ";
         EdgeNode* temp = adjList[idx];
         while (temp != nullptr) {
             cout << temp->medId << " ";
@@ -140,18 +136,17 @@ public:
         }
         cout << endl;
     }
-
     void runDFS() {
         if (vertexCount == 0) {
             cout << "No supplier-medicine links in Graph." << endl;
             return;
         }
         bool visited[MAX_SUPPLIERS];
-        for (int i = 0; i < MAX_SUPPLIERS; i++) visited[i] = false;
+        for (int i = 0; i < MAX_SUPPLIERS; i++) visited[i]=false;
 
-        cout << "\n--- Supplier-Medicine Graph (DFS Traversal) ---" << endl;
-        for (int i = 0; i < vertexCount; i++) {
-            if (!visited[i]) {
+        cout << "\n--- Supplier-Medicine Graph (DFS Traversal) ---"<< endl;
+        for (int i = 0; i < vertexCount; i++){
+            if (!visited[i]){
                 dfsHelper(i, visited);
             }
         }
