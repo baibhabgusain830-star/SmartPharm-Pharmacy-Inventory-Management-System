@@ -14,7 +14,7 @@ struct BillItem {
     int qty;
     double unitPrice;
     double subtotal;
-};
+ };
 
 class PharmacyInventory {
 public:
@@ -29,11 +29,11 @@ public:
     int nextBillNo;
     int currentDate;
 
-    PharmacyInventory() {
+    PharmacyInventory()  {
         nextTransId = 1001;
         nextBillNo = 5001;
         currentDate = 20261110;
-    }
+     }
 
     void addMedicine(Medicine* med) {
         medTable.insert(med);
