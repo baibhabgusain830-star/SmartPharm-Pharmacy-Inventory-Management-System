@@ -14,7 +14,7 @@ struct BillItem {
     int qty;
     double unitPrice;
     double subtotal;
- };
+    };
 
 class PharmacyInventory {
 public:
@@ -38,7 +38,7 @@ public:
     void addMedicine(Medicine* med) {
         medTable.insert(med);
         categoryTree.insert(med);
-    }
+      }
 
     Medicine* searchMedicineBinarySearch(int targetId) {
         Medicine** arr = new Medicine*[2000];
@@ -49,7 +49,7 @@ public:
             while (temp != nullptr && count < 2000) {
                 arr[count++] = temp->med;
                 temp = temp->next;
-            }
+              }
         }
 
         if (count == 0) {
@@ -63,7 +63,7 @@ public:
                     Medicine* temp = arr[j];
                     arr[j] = arr[j + 1];
                     arr[j + 1] = temp;
-                }
+                  }
             }
         }
 
@@ -95,7 +95,7 @@ public:
         fout << "GRAND TOTAL: Rs." << totalAmount << "\n";
         fout << "===============================================\n";
         fout.close();
-    }
+      }
 
     void sellSpecificMedicine(Medicine* m) {
         int qty;
@@ -110,7 +110,7 @@ public:
         if (!expiryHeap.sellFromFEFO(m->id, qty, currentDate)) {
             cout << "Sale failed: Not enough non-expired batch stock!" << endl;
             return;
-        }
+           }
 
         m->stock -= qty;
         double billAmount = m->price * qty;
@@ -126,7 +126,7 @@ public:
         if (m->stock < 20) {
             cout << "[Auto-Restock Alert] Stock for " << m->name << " is low (" << m->stock << "). Enqueuing supplier order!" << endl;
             restockQueue.enqueue(Supplier(599, "AutoRestock_Supplier", "9999999999"));
-        }
+          }
     }
 
     void generateCustomerBill() {
@@ -141,7 +141,7 @@ public:
         int addMore = 1;
 
         while (addMore == 1 && itemCount < 50) {
-            int mode;
+            int mode ;
             cout << "\nAdd Item #" << (itemCount + 1) << " -> Search by (1: Barcode, 2: Medicine ID): ";
             cin >> mode;
 
